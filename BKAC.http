@@ -1,0 +1,6 @@
+@BKAC_HostAddress = http://localhost:5146
+
+GET {{BKAC_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
