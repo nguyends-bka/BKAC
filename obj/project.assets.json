@@ -5187,11 +5187,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\DN\\DOANNGUYEN\\2.Master\\2024-2-A\\Virtualization_for_IoT\\BKAC_be\\BKAC\\BKAC.csproj",
+      "projectUniqueName": "E:\\DN\\DOANNGUYEN\\2.Master\\2024-2-A\\Virtualization_for_IoT\\BKAC\\BKAC.csproj",
       "projectName": "BKAC",
-      "projectPath": "E:\\DN\\DOANNGUYEN\\2.Master\\2024-2-A\\Virtualization_for_IoT\\BKAC_be\\BKAC\\BKAC.csproj",
+      "projectPath": "E:\\DN\\DOANNGUYEN\\2.Master\\2024-2-A\\Virtualization_for_IoT\\BKAC\\BKAC.csproj",
       "packagesPath": "C:\\Users\\nguyends\\.nuget\\packages\\",
-      "outputPath": "E:\\DN\\DOANNGUYEN\\2.Master\\2024-2-A\\Virtualization_for_IoT\\BKAC_be\\BKAC\\obj\\",
+      "outputPath": "E:\\DN\\DOANNGUYEN\\2.Master\\2024-2-A\\Virtualization_for_IoT\\BKAC\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\nguyends\\AppData\\Roaming\\NuGet\\NuGet.Config",

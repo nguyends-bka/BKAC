@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NaESIP0yY5wXNV0iWbhWACzLkoXeaW29/RKwH5apO0YGp9Ce8DptnmAGIkheO7sJwz5bretaVZNMs2+yszTItw==",
+  "dgSpecHash": "UAdzKS6UBdbmUYogVLbS7YXNwVZmNY4VJkPSuYbls4hpfSM3//qFwZdVEQOKa648v6tXIIwo3R1JkmkduhZLbA==",
   "success": true,
-  "projectFilePath": "E:\\DN\\DOANNGUYEN\\2.Master\\2024-2-A\\Virtualization_for_IoT\\BKAC_be\\BKAC\\BKAC.csproj",
+  "projectFilePath": "E:\\DN\\DOANNGUYEN\\2.Master\\2024-2-A\\Virtualization_for_IoT\\BKAC\\BKAC.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nguyends\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\nguyends\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
