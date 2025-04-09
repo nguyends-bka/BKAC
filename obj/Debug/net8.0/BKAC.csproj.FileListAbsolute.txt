@@ -337,3 +337,8 @@ E:\DN\DOANNGUYEN\2.Master\2024-2-A\Virtualization_for_IoT\BKAC\obj\Debug\net8.0\
 E:\DN\DOANNGUYEN\2.Master\2024-2-A\Virtualization_for_IoT\BKAC\obj\Debug\net8.0\BKAC.pdb
 E:\DN\DOANNGUYEN\2.Master\2024-2-A\Virtualization_for_IoT\BKAC\obj\Debug\net8.0\BKAC.genruntimeconfig.cache
 E:\DN\DOANNGUYEN\2.Master\2024-2-A\Virtualization_for_IoT\BKAC\obj\Debug\net8.0\ref\BKAC.dll
+E:\DN\DOANNGUYEN\2.Master\2024-2-A\Virtualization_for_IoT\BKAC\bin\Debug\net8.0\publish\web.config
+E:\DN\DOANNGUYEN\2.Master\2024-2-A\Virtualization_for_IoT\BKAC\bin\Debug\net8.0\publish\appsettings.Development.json
+E:\DN\DOANNGUYEN\2.Master\2024-2-A\Virtualization_for_IoT\BKAC\bin\Debug\net8.0\publish\appsettings.json
+E:\DN\DOANNGUYEN\2.Master\2024-2-A\Virtualization_for_IoT\BKAC\bin\Debug\net8.0\publish\BKAC.deps.json
+E:\DN\DOANNGUYEN\2.Master\2024-2-A\Virtualization_for_IoT\BKAC\bin\Debug\net8.0\publish\BKAC.runtimeconfig.json
