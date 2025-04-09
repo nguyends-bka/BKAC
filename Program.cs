@@ -24,6 +24,9 @@ var app = builder.Build();
 //     app.UseSwaggerUI();
 // }
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseHttpsRedirection();
 
 // Đảm bảo đăng ký các controller
