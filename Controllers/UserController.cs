@@ -27,7 +27,7 @@ namespace BKAC.Controllers
 
         // GET: api/User?userId=763436bb-d312-4faf-8983-7e2ae406aab2 (Lấy người dùng theo GUID từ query string)
         [HttpGet("userId")]
-        public async Task<ActionResult<User>> GetUser([FromQuery] string userId)  // Sửa thành Guid
+        public async Task<ActionResult<User>> GetUser([FromQuery] string userId)  // Sửa thành string
         {
             var user = await _context.Users.FindAsync(userId);  // Lấy người dùng theo GUID từ cơ sở dữ liệu
             if (user == null)
@@ -65,7 +65,7 @@ namespace BKAC.Controllers
 
         // DELETE: api/User?userId=763436bb-d312-4faf-8983-7e2ae406aab2 (Xóa người dùng theo GUID từ query string)
         [HttpDelete("userId")]
-        public async Task<IActionResult> DeleteUser([FromQuery] string userId)  // Sửa thành Guid
+        public async Task<IActionResult> DeleteUser([FromQuery] string userId)  // Sửa thành string
         {
             var user = await _context.Users.FindAsync(userId);  // Tìm người dùng theo GUID trong cơ sở dữ liệu
             if (user == null)
