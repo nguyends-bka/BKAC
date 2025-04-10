@@ -17,7 +17,7 @@ namespace BKAC.Controllers
             _context = context;
         }
 
-        // GET: api/User (Lấy tất cả người dùng)
+        // GET: api/User/All (Lấy tất cả người dùng)
         [HttpGet("All")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -25,11 +25,11 @@ namespace BKAC.Controllers
             return Ok(users);
         }
 
-        // GET: api/User?userId=5 (Lấy theo UserId từ query string)
+        // GET: api/User?userId=763436bb-d312-4faf-8983-7e2ae406aab2 (Lấy người dùng theo GUID từ query string)
         [HttpGet("userId")]
-        public async Task<ActionResult<User>> GetUser([FromQuery] int userId)
+        public async Task<ActionResult<User>> GetUser([FromQuery] Guid userId)  // Sửa thành Guid
         {
-            var user = await _context.Users.FindAsync(userId);  // Lấy người dùng theo ID từ cơ sở dữ liệu
+            var user = await _context.Users.FindAsync(userId);  // Lấy người dùng theo GUID từ cơ sở dữ liệu
             if (user == null)
                 return NotFound();
             return Ok(user);
@@ -39,36 +39,35 @@ namespace BKAC.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> CreateUser([FromBody] User user)
         {
-            // Không cần truyền Id, GUID sẽ tự động tạo mới
-            _context.Users.Add(user);  
-            await _context.SaveChangesAsync();  
+            _context.Users.Add(user);  // Thêm người dùng vào DbContext
+            await _context.SaveChangesAsync();  // Lưu thay đổi vào cơ sở dữ liệu
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);  
+            return CreatedAtAction(nameof(GetUser), new { userId = user.Id }, user);  // Trả về người dùng mới
         }
 
-        // PUT: api/User?userId=5 (Cập nhật người dùng theo UserId từ query string)
+        // PUT: api/User?userId=763436bb-d312-4faf-8983-7e2ae406aab2 (Cập nhật người dùng theo GUID từ query string)
         [HttpPut("userId")]
-        public async Task<IActionResult> UpdateUser([FromQuery] int userId, [FromBody] User user)
+        public async Task<IActionResult> UpdateUser([FromQuery] Guid userId, [FromBody] User user)
         {
-            var existingUser = await _context.Users.FindAsync(userId);  // Tìm người dùng theo ID trong cơ sở dữ liệu
+            var existingUser = await _context.Users.FindAsync(userId);  // Tìm người dùng theo GUID trong cơ sở dữ liệu
             if (existingUser == null)
                 return NotFound();
 
             existingUser.FullName = user.FullName;
             existingUser.UserName = user.UserName;
-            existingUser.FaceImg = user.FaceImg;  // Cập nhật FaceImg
-            existingUser.CCCD = user.CCCD;  // Cập nhật CCCD
-            existingUser.Fingerprint = user.Fingerprint;  // Cập nhật ảnh vân tay
+            existingUser.FaceImg = user.FaceImg;
+            existingUser.CCCD = user.CCCD;
+            existingUser.Fingerprint = user.Fingerprint;
 
             await _context.SaveChangesAsync();  // Lưu thay đổi vào cơ sở dữ liệu
             return NoContent();
         }
 
-        // DELETE: api/User?userId=5 (Xóa người dùng theo UserId từ query string)
+        // DELETE: api/User?userId=763436bb-d312-4faf-8983-7e2ae406aab2 (Xóa người dùng theo GUID từ query string)
         [HttpDelete("userId")]
-        public async Task<IActionResult> DeleteUser([FromQuery] int userId)
+        public async Task<IActionResult> DeleteUser([FromQuery] Guid userId)  // Sửa thành Guid
         {
-            var user = await _context.Users.FindAsync(userId);  // Tìm người dùng theo ID trong cơ sở dữ liệu
+            var user = await _context.Users.FindAsync(userId);  // Tìm người dùng theo GUID trong cơ sở dữ liệu
             if (user == null)
                 return NotFound();
 
