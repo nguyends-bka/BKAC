@@ -47,7 +47,7 @@ namespace BKAC.Controllers
 
         // PUT: api/User?userId=763436bb-d312-4faf-8983-7e2ae406aab2 (Cập nhật người dùng theo GUID từ query string)
         [HttpPut("userId")]
-        public async Task<IActionResult> UpdateUser([FromQuery] Guid userId, [FromBody] User user)
+        public async Task<IActionResult> UpdateUser([FromQuery] string userId, [FromBody] User user)
         {
             var existingUser = await _context.Users.FindAsync(userId);  // Tìm người dùng theo GUID trong cơ sở dữ liệu
             if (existingUser == null)
