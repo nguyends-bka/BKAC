@@ -2,7 +2,7 @@ namespace BKAC.Models
 {
     public class Visitor
     {
-        public string  Id { get; set; }
+        public string  Id { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         public string VisitorName { get; set; } = string.Empty;
         public string FaceImg { get; set; } = string.Empty;  
