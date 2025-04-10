@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BKAC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250410100259_updateUSER2")]
-    partial class updateUSER2
+    [Migration("20250410164022_ChangDB")]
+    partial class ChangDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,11 +85,9 @@ namespace BKAC.Migrations
 
             modelBuilder.Entity("BKAC.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CCCD")
                         .IsRequired()

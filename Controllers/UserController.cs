@@ -39,10 +39,11 @@ namespace BKAC.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> CreateUser([FromBody] User user)
         {
-            _context.Users.Add(user);  // Thêm người dùng vào DbContext
-            await _context.SaveChangesAsync();  // Lưu thay đổi vào cơ sở dữ liệu
+            // Không cần truyền Id, GUID sẽ tự động tạo mới
+            _context.Users.Add(user);  
+            await _context.SaveChangesAsync();  
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);  
         }
 
         // PUT: api/User?userId=5 (Cập nhật người dùng theo UserId từ query string)
