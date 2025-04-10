@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using BKAC.Data;  // Đảm bảo bạn có DbContext ở đây
 using BKAC.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace BKAC.Controllers
 {
@@ -9,7 +13,7 @@ namespace BKAC.Controllers
     [ApiController]
     public class HistoryController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;  // Khai báo DbContext
+        private readonly ApplicationDbContext _context;
 
         // Constructor để khởi tạo _context
         public HistoryController(ApplicationDbContext context)
@@ -25,7 +29,7 @@ namespace BKAC.Controllers
             return Ok(histories);
         }
 
-        // GET: api/History?historyId=5 (Lấy theo HistId từ query string)
+        // GET: api/History?historyId=5 (Lấy theo historyId từ query string)
         [HttpGet]
         [Route("historyId")]
         public async Task<ActionResult<History>> GetHistoryById([FromQuery] int historyId)
@@ -62,16 +66,21 @@ namespace BKAC.Controllers
             return Ok(histories);
         }
 
-        // GET: api/History?userIds=1,2,3&deviceIds=4,5 (Lấy lịch sử theo danh sách UserId và DeviceId từ query string)
+        // GET: api/History?userIds=1&userIds=2&userIds=3&deviceIds=4&deviceIds=5&startTime=2025-04-10T08:30:00&endTime=2025-04-10T17:00:00
         [HttpGet("userIds/deviceIds")]
-        public async Task<ActionResult<IEnumerable<History>>> GetHistoryByUsersAndDevices([FromQuery] string userIds, [FromQuery] string deviceIds)
+        public async Task<ActionResult<IEnumerable<History>>> GetHistoryByUsersAndDevices(
+            [FromQuery] List<string> userIds, 
+            [FromQuery] List<string> deviceIds, 
+            [FromQuery] DateTime startTime, 
+            [FromQuery] DateTime endTime)
         {
-            var userIdList = userIds.Split(',').Select(int.Parse).ToList();  // Chuyển chuỗi thành danh sách UserIds
-            var deviceIdList = deviceIds.Split(',').Select(int.Parse).ToList();  // Chuyển chuỗi thành danh sách DeviceIds
-
+            // Lọc lịch sử theo UserIds, DeviceIds và kiểm tra nếu Timestamp nằm trong khoảng thời gian
             var histories = await _context.Histories
-                .Where(h => userIdList.Contains(h.UserId) && deviceIdList.Contains(h.DeviceId))
-                .ToListAsync();  // Lọc lịch sử theo UserIds và DeviceIds
+                .Where(h => userIds.Contains(h.UserId.ToString()) &&  // Chuyển UserId thành string để so sánh với danh sách userIds
+                            deviceIds.Contains(h.DeviceId.ToString()) && // Chuyển DeviceId thành string để so sánh với danh sách deviceIds
+                            h.Timestamp >= startTime && 
+                            h.Timestamp <= endTime)
+                .ToListAsync();  // Lọc dữ liệu theo UserIds, DeviceIds và Timestamp
 
             if (histories == null || histories.Count == 0)
                 return NotFound();
@@ -86,15 +95,15 @@ namespace BKAC.Controllers
             _context.Histories.Add(history);  // Thêm lịch sử vào DbContext
             await _context.SaveChangesAsync();  // Lưu thay đổi vào cơ sở dữ liệu
 
-            return CreatedAtAction(nameof(GetHistoryById), new { id = history.HistId }, history);
+            return CreatedAtAction(nameof(GetHistoryById), new { historyId = history.HistId }, history);
         }
 
-        // PUT: api/History?historyId=5 (Cập nhật lịch sử theo HistId từ query string)
+        // PUT: api/History?historyId=5 (Cập nhật lịch sử theo historyId từ query string)
         [HttpPut]
         [Route("historyId")]
         public async Task<IActionResult> UpdateHistory([FromQuery] int historyId, [FromBody] History history)
         {
-            var existingHistory = await _context.Histories.FindAsync(historyId);  // Tìm lịch sử theo ID trong cơ sở dữ liệu
+            var existingHistory = await _context.Histories.FindAsync(historyId);
             if (existingHistory == null)
                 return NotFound();
 
@@ -108,7 +117,7 @@ namespace BKAC.Controllers
             return NoContent();
         }
 
-        // DELETE: api/History?historyId=5 (Xóa lịch sử theo HistId từ query string)
+        // DELETE: api/History?historyId=5 (Xóa lịch sử theo historyId từ query string)
         [HttpDelete]
         [Route("historyId")]
         public async Task<IActionResult> DeleteHistory([FromQuery] int historyId)
