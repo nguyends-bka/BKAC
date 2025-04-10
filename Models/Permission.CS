@@ -6,10 +6,10 @@ namespace BKAC.Models
     public class Permission
     {
         [Key]
-        public Guid Id { get; set; }  // ID của quyền
+        public string Id { get; set; }  // ID của quyền
 
-        public int UserId { get; set; }  // ID người dùng
-        public int DeviceId { get; set; }  // ID thiết bị
+        public string UserId { get; set; }  // ID người dùng
+        public string DeviceId { get; set; }  // ID thiết bị
 
         public DateTime Time_Start { get; set; }  // Thời gian bắt đầu quyền
         public DateTime Time_End { get; set; }    // Thời gian kết thúc quyền
@@ -18,7 +18,9 @@ namespace BKAC.Models
 
         public Permission()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid().ToString(); // Khởi tạo Id là string GUID
+            UserId = string.Empty; // Khởi tạo UserId
+            DeviceId = string.Empty; // Khởi tạo DeviceId
         }
     }
 }

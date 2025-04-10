@@ -24,12 +24,12 @@ namespace BKAC.Migrations
 
             modelBuilder.Entity("BKAC.Models.History", b =>
                 {
-                    b.Property<Guid>("HistId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("HistId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("DeviceId")
-                        .HasColumnType("int");
+                    b.Property<string>("DeviceId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -42,8 +42,9 @@ namespace BKAC.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("HistId");
 
@@ -52,15 +53,15 @@ namespace BKAC.Migrations
 
             modelBuilder.Entity("BKAC.Models.Permission", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DeviceId")
-                        .HasColumnType("int");
+                    b.Property<string>("DeviceId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Time_End")
                         .HasColumnType("datetime2");
@@ -68,8 +69,9 @@ namespace BKAC.Migrations
                     b.Property<DateTime>("Time_Start")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -78,9 +80,8 @@ namespace BKAC.Migrations
 
             modelBuilder.Entity("BKAC.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CCCD")
                         .IsRequired()

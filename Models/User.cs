@@ -2,7 +2,7 @@ namespace BKAC.Models
 {
     public class User
     {
-        public Guid Id { get; set; }
+        public string  Id { get; set; }
         public string FullName { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
         public string FaceImg { get; set; } = string.Empty;  
@@ -12,7 +12,7 @@ namespace BKAC.Models
         // Khởi tạo Id mặc định là Guid mới khi khởi tạo đối tượng
         public User()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid().ToString();
         }
     }
 }
