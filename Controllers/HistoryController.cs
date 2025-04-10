@@ -75,7 +75,7 @@ namespace BKAC.Controllers
         // }
 
         // GET: api/History/user/{listUserId}/device/{listDeviceId} (Lấy lịch sử theo danh sách UserId và DeviceId)
-        [HttpGet("user/{listUserId}/device/{listDeviceId}")]
+        [HttpPost("user/{listUserId}/device/{listDeviceId}")]
         public async Task<ActionResult<IEnumerable<History>>> GetHistoryByUsersAndDevices(string listUserId, string listDeviceId)
         {
             // Chuyển chuỗi tham số thành danh sách các ID
