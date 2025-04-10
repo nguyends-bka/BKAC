@@ -55,7 +55,7 @@ namespace BKAC.Controllers
 
             existingUser.FullName = user.FullName;
             existingUser.UserName = user.UserName;
-            existingUser.Avatar = user.Avatar;
+            existingUser.FaceImg = user.FaceImg;  // Cập nhật FaceImg
             existingUser.CCCD = user.CCCD;  // Cập nhật CCCD
             existingUser.Fingerprint = user.Fingerprint;  // Cập nhật ảnh vân tay
 
