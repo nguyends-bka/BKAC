@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BKAC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250410164022_ChangDB")]
-    partial class ChangDB
+    [Migration("20250410171937_UpdateGuidForIds")]
+    partial class UpdateGuidForIds
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,9 @@ namespace BKAC.Migrations
 
             modelBuilder.Entity("BKAC.Models.History", b =>
                 {
-                    b.Property<int>("HistId")
+                    b.Property<Guid>("HistId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HistId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("DeviceId")
                         .HasColumnType("int");
@@ -57,11 +55,9 @@ namespace BKAC.Migrations
 
             modelBuilder.Entity("BKAC.Models.Permission", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");

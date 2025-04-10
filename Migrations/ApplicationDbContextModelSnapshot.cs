@@ -24,11 +24,9 @@ namespace BKAC.Migrations
 
             modelBuilder.Entity("BKAC.Models.History", b =>
                 {
-                    b.Property<int>("HistId")
+                    b.Property<Guid>("HistId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HistId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("DeviceId")
                         .HasColumnType("int");
@@ -54,11 +52,9 @@ namespace BKAC.Migrations
 
             modelBuilder.Entity("BKAC.Models.Permission", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
