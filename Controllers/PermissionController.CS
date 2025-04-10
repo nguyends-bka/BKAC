@@ -28,7 +28,7 @@ namespace BKAC.Controllers
         // GET: api/Permission?permissionId=5 (Lấy quyền theo ID từ query string)
         [HttpGet]
         [Route("permissionId")]
-        public async Task<ActionResult<Permission>> GetPermissionById([FromQuery] int permissionId)
+        public async Task<ActionResult<Permission>> GetPermissionById([FromQuery] string permissionId)
         {
             var permission = await _context.Permissions.FindAsync(permissionId);
 
@@ -54,7 +54,7 @@ namespace BKAC.Controllers
         // PUT: api/Permission?permissionId=5 (Cập nhật quyền theo ID từ query string)
         [HttpPut]
         [Route("permissionId")]
-        public async Task<IActionResult> UpdatePermission([FromQuery] int permissionId, [FromBody] Permission permission)
+        public async Task<IActionResult> UpdatePermission([FromQuery] string permissionId, [FromBody] Permission permission)
         {
             var existingPermission = await _context.Permissions.FindAsync(permissionId);
             if (existingPermission == null)
@@ -73,7 +73,7 @@ namespace BKAC.Controllers
         // DELETE: api/Permission?permissionId=5 (Xóa quyền theo ID từ query string)
         [HttpDelete]
         [Route("permissionId")]
-        public async Task<IActionResult> DeletePermission([FromQuery] int permissionId)
+        public async Task<IActionResult> DeletePermission([FromQuery] string permissionId)
         {
             var permission = await _context.Permissions.FindAsync(permissionId);
             if (permission == null)
