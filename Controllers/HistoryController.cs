@@ -25,19 +25,20 @@ namespace BKAC.Controllers
             return Ok(histories);
         }
 
-        // GET: api/History/5 (Lấy theo HistId)
-        [HttpGet("{id}")]
-        public async Task<ActionResult<History>> GetHistoryById(int id)
+        // GET: api/History?historyId=5 (Lấy theo HistId từ query string)
+        [HttpGet]
+        [Route("historyId")]
+        public async Task<ActionResult<History>> GetHistoryById([FromQuery] int historyId)
         {
-            var history = await _context.Histories.FindAsync(id);  // Lấy lịch sử theo HistId từ cơ sở dữ liệu
+            var history = await _context.Histories.FindAsync(historyId);  // Lấy lịch sử theo HistId từ cơ sở dữ liệu
             if (history == null)
                 return NotFound();
             return Ok(history);
         }
 
-        // GET: api/History/user/5 (Lấy theo UserId)
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<History>>> GetHistoryByUserId(int userId)
+        // GET: api/History?userId=5 (Lấy theo UserId từ query string)
+        [HttpGet("userId")]
+        public async Task<ActionResult<IEnumerable<History>>> GetHistoryByUserId([FromQuery] int userId)
         {
             var histories = await _context.Histories
                 .Where(h => h.UserId == userId)
@@ -48,9 +49,9 @@ namespace BKAC.Controllers
             return Ok(histories);
         }
 
-        // GET: api/History/device/5 (Lấy theo DeviceId)
-        [HttpGet("device/{deviceId}")]
-        public async Task<ActionResult<IEnumerable<History>>> GetHistoryByDeviceId(int deviceId)
+        // GET: api/History?deviceId=5 (Lấy theo DeviceId từ query string)
+        [HttpGet("deviceId")]
+        public async Task<ActionResult<IEnumerable<History>>> GetHistoryByDeviceId([FromQuery] int deviceId)
         {
             var histories = await _context.Histories
                 .Where(h => h.DeviceId == deviceId)
@@ -61,31 +62,16 @@ namespace BKAC.Controllers
             return Ok(histories);
         }
 
-        // GET: api/History/user/5/device/5 (Lấy theo UserId và DeviceId)
-        // [HttpGet("user/{userId}/device/{deviceId}")]
-        // public async Task<ActionResult<IEnumerable<History>>> GetHistoryByUserAndDevice(int userId, int deviceId)
-        // {
-        //     var histories = await _context.Histories
-        //         .Where(h => h.UserId == userId && h.DeviceId == deviceId)
-        //         .ToListAsync();  // Lọc lịch sử theo UserId và DeviceId
-
-        //     if (histories == null || histories.Count == 0)
-        //         return NotFound();
-        //     return Ok(histories);
-        // }
-
-        // GET: api/History/user/{listUserId}/device/{listDeviceId} (Lấy lịch sử theo danh sách UserId và DeviceId)
-        [HttpPost("user/{listUserId}/device/{listDeviceId}")]
-        public async Task<ActionResult<IEnumerable<History>>> GetHistoryByUsersAndDevices(string listUserId, string listDeviceId)
+        // GET: api/History?userIds=1,2,3&deviceIds=4,5 (Lấy lịch sử theo danh sách UserId và DeviceId từ query string)
+        [HttpGet("userIds/deviceIds")]
+        public async Task<ActionResult<IEnumerable<History>>> GetHistoryByUsersAndDevices([FromQuery] string userIds, [FromQuery] string deviceIds)
         {
-            // Chuyển chuỗi tham số thành danh sách các ID
-            var userIds = listUserId.Split(',').Select(int.Parse).ToList();  // Tách chuỗi và chuyển thành danh sách int
-            var deviceIds = listDeviceId.Split(',').Select(int.Parse).ToList();  // Tách chuỗi và chuyển thành danh sách int
+            var userIdList = userIds.Split(',').Select(int.Parse).ToList();  // Chuyển chuỗi thành danh sách UserIds
+            var deviceIdList = deviceIds.Split(',').Select(int.Parse).ToList();  // Chuyển chuỗi thành danh sách DeviceIds
 
-            // Lọc lịch sử theo UserIds và DeviceIds
             var histories = await _context.Histories
-                .Where(h => userIds.Contains(h.UserId) && deviceIds.Contains(h.DeviceId))
-                .ToListAsync();  // Lấy dữ liệu theo UserIds và DeviceIds
+                .Where(h => userIdList.Contains(h.UserId) && deviceIdList.Contains(h.DeviceId))
+                .ToListAsync();  // Lọc lịch sử theo UserIds và DeviceIds
 
             if (histories == null || histories.Count == 0)
                 return NotFound();
@@ -93,9 +79,7 @@ namespace BKAC.Controllers
             return Ok(histories);
         }
 
-        
-
-        // POST: api/History
+        // POST: api/History (Tạo lịch sử mới)
         [HttpPost]
         public async Task<ActionResult<History>> CreateHistory([FromBody] History history)
         {
@@ -105,11 +89,12 @@ namespace BKAC.Controllers
             return CreatedAtAction(nameof(GetHistoryById), new { id = history.HistId }, history);
         }
 
-        // PUT: api/History/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateHistory(int id, [FromBody] History history)
+        // PUT: api/History?historyId=5 (Cập nhật lịch sử theo HistId từ query string)
+        [HttpPut]
+        [Route("historyId")]
+        public async Task<IActionResult> UpdateHistory([FromQuery] int historyId, [FromBody] History history)
         {
-            var existingHistory = await _context.Histories.FindAsync(id);  // Tìm lịch sử theo ID trong cơ sở dữ liệu
+            var existingHistory = await _context.Histories.FindAsync(historyId);  // Tìm lịch sử theo ID trong cơ sở dữ liệu
             if (existingHistory == null)
                 return NotFound();
 
@@ -123,11 +108,12 @@ namespace BKAC.Controllers
             return NoContent();
         }
 
-        // DELETE: api/History/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHistory(int id)
+        // DELETE: api/History?historyId=5 (Xóa lịch sử theo HistId từ query string)
+        [HttpDelete]
+        [Route("historyId")]
+        public async Task<IActionResult> DeleteHistory([FromQuery] int historyId)
         {
-            var history = await _context.Histories.FindAsync(id);  // Tìm lịch sử theo ID trong cơ sở dữ liệu
+            var history = await _context.Histories.FindAsync(historyId);  // Tìm lịch sử theo ID trong cơ sở dữ liệu
             if (history == null)
                 return NotFound();
 

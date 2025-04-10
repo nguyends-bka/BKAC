@@ -17,7 +17,7 @@ namespace BKAC.Controllers
             _context = context;
         }
 
-        // GET: api/User
+        // GET: api/User (Lấy tất cả người dùng)
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -25,17 +25,17 @@ namespace BKAC.Controllers
             return Ok(users);
         }
 
-        // GET: api/User/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        // GET: api/User?userId=5 (Lấy theo UserId từ query string)
+        [HttpGet("userId")]
+        public async Task<ActionResult<User>> GetUser([FromQuery] int userId)
         {
-            var user = await _context.Users.FindAsync(id);  // Lấy người dùng theo ID từ cơ sở dữ liệu
+            var user = await _context.Users.FindAsync(userId);  // Lấy người dùng theo ID từ cơ sở dữ liệu
             if (user == null)
                 return NotFound();
             return Ok(user);
         }
 
-        // POST: api/User
+        // POST: api/User (Tạo người dùng mới)
         [HttpPost]
         public async Task<ActionResult<User>> CreateUser([FromBody] User user)
         {
@@ -45,11 +45,11 @@ namespace BKAC.Controllers
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
-        // PUT: api/User/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
+        // PUT: api/User?userId=5 (Cập nhật người dùng theo UserId từ query string)
+        [HttpPut("userId")]
+        public async Task<IActionResult> UpdateUser([FromQuery] int userId, [FromBody] User user)
         {
-            var existingUser = await _context.Users.FindAsync(id);  // Tìm người dùng theo ID trong cơ sở dữ liệu
+            var existingUser = await _context.Users.FindAsync(userId);  // Tìm người dùng theo ID trong cơ sở dữ liệu
             if (existingUser == null)
                 return NotFound();
 
@@ -63,11 +63,11 @@ namespace BKAC.Controllers
             return NoContent();
         }
 
-        // DELETE: api/User/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        // DELETE: api/User?userId=5 (Xóa người dùng theo UserId từ query string)
+        [HttpDelete("userId")]
+        public async Task<IActionResult> DeleteUser([FromQuery] int userId)
         {
-            var user = await _context.Users.FindAsync(id);  // Tìm người dùng theo ID trong cơ sở dữ liệu
+            var user = await _context.Users.FindAsync(userId);  // Tìm người dùng theo ID trong cơ sở dữ liệu
             if (user == null)
                 return NotFound();
 

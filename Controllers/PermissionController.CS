@@ -25,11 +25,12 @@ namespace BKAC.Controllers
             return Ok(permissions);
         }
 
-        // GET: api/Permission/5 (Lấy quyền theo ID)
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Permission>> GetPermissionById(int id)
+        // GET: api/Permission?permissionId=5 (Lấy quyền theo ID từ query string)
+        [HttpGet]
+        [Route("permissionId")]
+        public async Task<ActionResult<Permission>> GetPermissionById([FromQuery] int permissionId)
         {
-            var permission = await _context.Permissions.FindAsync(id);
+            var permission = await _context.Permissions.FindAsync(permissionId);
 
             if (permission == null)
                 return NotFound();
@@ -47,14 +48,15 @@ namespace BKAC.Controllers
             _context.Permissions.Add(permission);  // Thêm quyền vào DbContext
             await _context.SaveChangesAsync();  // Lưu thay đổi vào cơ sở dữ liệu
 
-            return CreatedAtAction(nameof(GetPermissionById), new { id = permission.Id }, permission);
+            return CreatedAtAction(nameof(GetPermissionById), new { permissionId = permission.Id }, permission);
         }
 
-        // PUT: api/Permission/5 (Cập nhật quyền)
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePermission(int id, [FromBody] Permission permission)
+        // PUT: api/Permission?permissionId=5 (Cập nhật quyền theo ID từ query string)
+        [HttpPut]
+        [Route("permissionId")]
+        public async Task<IActionResult> UpdatePermission([FromQuery] int permissionId, [FromBody] Permission permission)
         {
-            var existingPermission = await _context.Permissions.FindAsync(id);
+            var existingPermission = await _context.Permissions.FindAsync(permissionId);
             if (existingPermission == null)
                 return NotFound();
 
@@ -68,11 +70,12 @@ namespace BKAC.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Permission/5 (Xóa quyền theo ID)
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePermission(int id)
+        // DELETE: api/Permission?permissionId=5 (Xóa quyền theo ID từ query string)
+        [HttpDelete]
+        [Route("permissionId")]
+        public async Task<IActionResult> DeletePermission([FromQuery] int permissionId)
         {
-            var permission = await _context.Permissions.FindAsync(id);
+            var permission = await _context.Permissions.FindAsync(permissionId);
             if (permission == null)
                 return NotFound();
 
