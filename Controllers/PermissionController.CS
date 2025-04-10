@@ -18,7 +18,7 @@ namespace BKAC.Controllers
         }
 
         // GET: api/Permission (Lấy tất cả quyền)
-        [HttpGet]
+        [HttpGet("All")]
         public async Task<ActionResult<IEnumerable<Permission>>> GetAllPermissions()
         {
             var permissions = await _context.Permissions.ToListAsync();

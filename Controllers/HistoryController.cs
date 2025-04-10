@@ -22,7 +22,7 @@ namespace BKAC.Controllers
         }
 
         // GET: api/History (Lấy tất cả lịch sử)
-        [HttpGet]
+        [HttpGet("All")]
         public async Task<ActionResult<IEnumerable<History>>> GetAllHistories()
         {
             var histories = await _context.Histories.ToListAsync();  // Lấy tất cả lịch sử từ cơ sở dữ liệu

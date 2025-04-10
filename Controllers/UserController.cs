@@ -18,7 +18,7 @@ namespace BKAC.Controllers
         }
 
         // GET: api/User (Lấy tất cả người dùng)
-        [HttpGet]
+        [HttpGet("All")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var users = await _context.Users.ToListAsync();  // Lấy danh sách người dùng từ cơ sở dữ liệu
