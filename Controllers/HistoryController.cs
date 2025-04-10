@@ -62,17 +62,38 @@ namespace BKAC.Controllers
         }
 
         // GET: api/History/user/5/device/5 (Lấy theo UserId và DeviceId)
-        [HttpGet("user/{userId}/device/{deviceId}")]
-        public async Task<ActionResult<IEnumerable<History>>> GetHistoryByUserAndDevice(int userId, int deviceId)
+        // [HttpGet("user/{userId}/device/{deviceId}")]
+        // public async Task<ActionResult<IEnumerable<History>>> GetHistoryByUserAndDevice(int userId, int deviceId)
+        // {
+        //     var histories = await _context.Histories
+        //         .Where(h => h.UserId == userId && h.DeviceId == deviceId)
+        //         .ToListAsync();  // Lọc lịch sử theo UserId và DeviceId
+
+        //     if (histories == null || histories.Count == 0)
+        //         return NotFound();
+        //     return Ok(histories);
+        // }
+
+        // GET: api/History/user/{listUserId}/device/{listDeviceId} (Lấy lịch sử theo danh sách UserId và DeviceId)
+        [HttpGet("user/{listUserId}/device/{listDeviceId}")]
+        public async Task<ActionResult<IEnumerable<History>>> GetHistoryByUsersAndDevices(string listUserId, string listDeviceId)
         {
+            // Chuyển chuỗi tham số thành danh sách các ID
+            var userIds = listUserId.Split(',').Select(int.Parse).ToList();  // Tách chuỗi và chuyển thành danh sách int
+            var deviceIds = listDeviceId.Split(',').Select(int.Parse).ToList();  // Tách chuỗi và chuyển thành danh sách int
+
+            // Lọc lịch sử theo UserIds và DeviceIds
             var histories = await _context.Histories
-                .Where(h => h.UserId == userId && h.DeviceId == deviceId)
-                .ToListAsync();  // Lọc lịch sử theo UserId và DeviceId
+                .Where(h => userIds.Contains(h.UserId) && deviceIds.Contains(h.DeviceId))
+                .ToListAsync();  // Lấy dữ liệu theo UserIds và DeviceIds
 
             if (histories == null || histories.Count == 0)
                 return NotFound();
+
             return Ok(histories);
         }
+
+        
 
         // POST: api/History
         [HttpPost]

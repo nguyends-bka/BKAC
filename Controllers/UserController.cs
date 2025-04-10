@@ -56,6 +56,8 @@ namespace BKAC.Controllers
             existingUser.FullName = user.FullName;
             existingUser.UserName = user.UserName;
             existingUser.Avatar = user.Avatar;
+            existingUser.CCCD = user.CCCD;  // Cập nhật CCCD
+            existingUser.Fingerprint = user.Fingerprint;  // Cập nhật ảnh vân tay
 
             await _context.SaveChangesAsync();  // Lưu thay đổi vào cơ sở dữ liệu
             return NoContent();

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BKAC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ae3c65446f0bd9aca5a3522c2d640e0fbf8fe392")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+601487bbd8a41de59c89758edd82d4d32420be01")]
 [assembly: System.Reflection.AssemblyProductAttribute("BKAC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BKAC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
