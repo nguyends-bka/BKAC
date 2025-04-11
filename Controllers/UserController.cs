@@ -45,9 +45,9 @@ namespace BKAC.Controllers
             return CreatedAtAction(nameof(GetUser), new { userId = user.Id }, user);  // Trả về người dùng mới
         }
 
-        // PUT: api/User?userId=763436bb-d312-4faf-8983-7e2ae406aab2 (Cập nhật người dùng theo GUID từ query string)
-        [HttpPut("userId")]
-        public async Task<IActionResult> UpdateUser([FromQuery] string userId, [FromBody] User user)
+        // PUT: api/User/763436bb-d312-4faf-8983-7e2ae406aab2 (Cập nhật người dùng theo GUID trong route)
+        [HttpPost("{userId}")]
+        public async Task<IActionResult> UpdateUser([FromRoute] string userId, [FromBody] User user)
         {
             var existingUser = await _context.Users.FindAsync(userId);  // Tìm người dùng theo GUID trong cơ sở dữ liệu
             if (existingUser == null)
@@ -64,8 +64,8 @@ namespace BKAC.Controllers
         }
 
         // DELETE: api/User?userId=763436bb-d312-4faf-8983-7e2ae406aab2 (Xóa người dùng theo GUID từ query string)
-        [HttpDelete("userId")]
-        public async Task<IActionResult> DeleteUser([FromQuery] string userId)  // Đảm bảo userId là string
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> DeleteUser([FromRoute] string userId)  // Đảm bảo userId là string
         {
             var user = await _context.Users.FindAsync(userId);  // Tìm người dùng theo GUID trong cơ sở dữ liệu
             if (user == null)
