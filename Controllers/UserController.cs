@@ -53,7 +53,7 @@ namespace BKAC.Controllers
             if (existingUser == null)
                 return NotFound();
 
-            existingUser.Id = userId
+            existingUser.Id = userId;
             existingUser.FullName = user.FullName;
             existingUser.UserName = user.UserName;
             existingUser.FaceImg = user.FaceImg;
