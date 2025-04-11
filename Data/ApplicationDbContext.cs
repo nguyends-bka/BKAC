@@ -7,7 +7,6 @@ namespace BKAC.Data
     {
         public DbSet<User> Users { get; set; }
 
-        public DbSet<Visitor> Visitors { get; set; }
 
         public DbSet<History> Histories { get; set; }
         public DbSet<Permission> Permissions { get; set; }  // Thêm DbSet cho Permission
