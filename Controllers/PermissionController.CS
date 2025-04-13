@@ -47,7 +47,7 @@ namespace BKAC.Controllers
 
         // POST: api/Permission (Tạo quyền mới)
         [HttpPost]
-        public async Task<ActionResult> CreatePermission([FromBody] PermissionDataRequestDto permissions, String token)
+        public async Task<ActionResult> CreatePermission([FromBody] PermissionDataRequestDto permissions)
         {
             var createdPermissions = new List<Permission>();
 
@@ -74,7 +74,7 @@ namespace BKAC.Controllers
                     rpcParamsDto.identifyNumber = user.CCCD;
                     rpcParamsDto.userId = user.Id;
                     
-                    rpcRequestDto.Token = token;
+                    rpcRequestDto.Token = permissions.Token;
                     rpcRequestDto.DeviceId = deviceId;
                     rpcRequestDto.Method = "userSchedule";
                     rpcRequestDto.Params = rpcParamsDto;
