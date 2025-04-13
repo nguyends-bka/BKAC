@@ -59,6 +59,8 @@ namespace BKAC.Controllers
                     {
                         UserId = userId,
                         DeviceId = deviceId,
+                        Time_Start = permissions.Time_Start,
+                        Time_End = permissions.Time_End,
                         CreatedAt = DateTime.UtcNow // Always set current time
                     };
 
