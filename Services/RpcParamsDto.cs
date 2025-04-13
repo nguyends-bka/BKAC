@@ -2,12 +2,12 @@ namespace BKAC.Services
 {
     public class RpcParamsDto
     {
-        public string UserId { get; set; }
-        public string Username { get; set; }
-        public string IdentifyNumber { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public string FingerPrintImage { get; set; }
-        public string FaceImage { get; set; }
+        public string userId { get; set; }
+        public string username { get; set; }
+        public string identifyNumber { get; set; }
+        public DateTime startTime { get; set; }
+        public DateTime endTime { get; set; }
+        public string fingerPrintImage { get; set; }
+        public string faceImage { get; set; }
     }
 }

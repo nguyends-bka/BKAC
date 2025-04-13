@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BKAC.Data;  // Đảm bảo bạn có DbContext ở đây
 using BKAC.Models;
+using BKAC.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BKAC.Controllers.Dto;
@@ -15,11 +16,12 @@ namespace BKAC.Controllers
     public class PermissionController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
+         private readonly RpcService _rpcService;
         // Constructor để khởi tạo _context
-        public PermissionController(ApplicationDbContext context)
+        public PermissionController(ApplicationDbContext context, RpcService rpcServic)
         {
             _context = context;
+            _rpcService = rpcServic;
         }
 
         // GET: api/Permission (Lấy tất cả quyền)
@@ -45,7 +47,7 @@ namespace BKAC.Controllers
 
         // POST: api/Permission (Tạo quyền mới)
         [HttpPost]
-        public async Task<ActionResult> CreatePermission([FromBody] PermissionDataRequestDto permissions)
+        public async Task<ActionResult> CreatePermission([FromBody] PermissionDataRequestDto permissions, String token)
         {
             var createdPermissions = new List<Permission>();
 
@@ -60,6 +62,25 @@ namespace BKAC.Controllers
                         CreatedAt = DateTime.UtcNow // Always set current time
                     };
 
+                    var rpcParamsDto = new RpcParamsDto();
+                    var rpcRequestDto = new RpcRequestDto();
+                    var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+                    rpcParamsDto.username = user.UserName;
+                    rpcParamsDto.endTime = permissions.Time_End;
+                    rpcParamsDto.startTime = permission.Time_Start;
+                    rpcParamsDto.faceImage = user.FaceImg;
+                    rpcParamsDto.fingerPrintImage = user.Fingerprint;
+                    rpcParamsDto.identifyNumber = user.CCCD;
+                    rpcParamsDto.userId = user.Id;
+                    
+                    rpcRequestDto.Token = token;
+                    rpcRequestDto.DeviceId = deviceId;
+                    rpcRequestDto.Method = "userSchedule";
+                    rpcRequestDto.Params = rpcParamsDto;
+
+                    var response = await _rpcService.SendRpcRequestAsync(rpcRequestDto);
+
                     _context.Permissions.Add(permission);
                     createdPermissions.Add(permission);
                 }
@@ -73,36 +94,6 @@ namespace BKAC.Controllers
                 Count = createdPermissions.Count,
                 Permissions = createdPermissions
             });
-        }
-
-        // POST: api/Permission/batch (Tạo quyền mới với nhiều UserId và DeviceId)
-        [HttpPost("batch")]
-        public async Task<ActionResult<IEnumerable<Permission>>> CreatePermissionsBatch([FromBody] BatchPermissionRequest batchRequest)
-        {
-            var permissions = new List<Permission>();
-
-            // Lặp qua danh sách UserIds và DeviceIds để tạo quyền
-            foreach (var userId in batchRequest.UserIds)
-            {
-                foreach (var deviceId in batchRequest.DeviceIds)
-                {
-                    var permission = new Permission
-                    {
-                        UserId = userId,
-                        DeviceId = deviceId,
-                        Time_Start = batchRequest.TimeStart,
-                        Time_End = batchRequest.TimeEnd,
-                        CreatedAt = batchRequest.CreatedAt == default(DateTime) ? DateTime.UtcNow : batchRequest.CreatedAt // Nếu không có CreatedAt, dùng thời gian hiện tại
-                    };
-
-                    _context.Permissions.Add(permission);  // Thêm quyền vào DbContext
-                    permissions.Add(permission);
-                }
-            }
-
-            await _context.SaveChangesAsync();  // Lưu thay đổi vào cơ sở dữ liệu
-
-            return CreatedAtAction(nameof(GetAllPermissions), permissions);
         }
 
         // PUT: api/Permission?permissionId=5 (Cập nhật quyền theo ID từ query string)
@@ -138,15 +129,5 @@ namespace BKAC.Controllers
 
             return NoContent();
         }
-    }
-
-    // Định nghĩa model cho yêu cầu batch
-    public class BatchPermissionRequest
-    {
-        public List<string> UserIds { get; set; }  // Danh sách UserId
-        public List<string> DeviceIds { get; set; }  // Danh sách DeviceId
-        public DateTime TimeStart { get; set; }  // Thời gian bắt đầu
-        public DateTime TimeEnd { get; set; }    // Thời gian kết thúc
-        public DateTime CreatedAt { get; set; }  // Thời gian tạo quyền (được truyền từ UI)
     }
 }
