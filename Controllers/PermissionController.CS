@@ -6,6 +6,7 @@ using BKAC.Data;  // Đảm bảo bạn có DbContext ở đây
 using BKAC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using BKAC.Controllers.Dto;
 
 namespace BKAC.Controllers
 {
@@ -44,18 +45,34 @@ namespace BKAC.Controllers
 
         // POST: api/Permission (Tạo quyền mới)
         [HttpPost]
-        public async Task<ActionResult<Permission>> CreatePermission([FromBody] Permission permission)
+        public async Task<ActionResult> CreatePermission([FromBody] PermissionDataRequestDto permissions)
         {
-            // Nếu CreatedAt không được truyền từ UI, gán giá trị mặc định (thời gian hiện tại)
-            if (permission.CreatedAt == default(DateTime))
+            var createdPermissions = new List<Permission>();
+
+            foreach (var userId in permissions.UserIds)
             {
-                permission.CreatedAt = DateTime.UtcNow;
+                foreach (var deviceId in permissions.DeviceIds)
+                {
+                    var permission = new Permission
+                    {
+                        UserId = userId,
+                        DeviceId = deviceId,
+                        CreatedAt = DateTime.UtcNow // Always set current time
+                    };
+
+                    _context.Permissions.Add(permission);
+                    createdPermissions.Add(permission);
+                }
             }
 
-            _context.Permissions.Add(permission);  // Thêm quyền vào DbContext
-            await _context.SaveChangesAsync();  // Lưu thay đổi vào cơ sở dữ liệu
+            await _context.SaveChangesAsync(); // Save all at once after loop
 
-            return CreatedAtAction(nameof(GetPermissionById), new { permissionId = permission.Id }, permission);
+            return Ok(new
+            {
+                Message = "Permissions created successfully",
+                Count = createdPermissions.Count,
+                Permissions = createdPermissions
+            });
         }
 
         // POST: api/Permission/batch (Tạo quyền mới với nhiều UserId và DeviceId)
