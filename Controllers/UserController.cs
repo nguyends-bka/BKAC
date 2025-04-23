@@ -18,12 +18,6 @@ namespace BKAC.Controllers
     {
         private readonly ApplicationDbContext _context;  // Khai báo DbContext
 
-        static UserController()
-        {
-            // Đặt license context cho EPPlus
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-        }
-
         // Constructor để khởi tạo _context
         public UserController(ApplicationDbContext context)
         {
