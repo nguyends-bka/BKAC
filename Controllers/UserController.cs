@@ -2,9 +2,16 @@ using Microsoft.AspNetCore.Mvc;
 using BKAC.Data;  // Đảm bảo bạn có DbContext ở đây
 using BKAC.Models;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+using System.IO;
 
 namespace BKAC.Controllers
 {
+    public class ImportUsersFromExcelRequest
+    {
+        public IFormFile ExcelFile { get; set; }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -33,6 +40,61 @@ namespace BKAC.Controllers
             if (user == null)
                 return NotFound();
             return Ok(user);
+        }
+
+        // POST: api/User/import-excel
+        [HttpPost("import-excel")]
+        public async Task<ActionResult<List<User>>> ImportUsersFromExcel([FromForm] ImportUsersFromExcelRequest request)
+        {
+            if (request.ExcelFile == null || request.ExcelFile.Length <= 0)
+                return BadRequest("File không được để trống");
+
+            if (!Path.GetExtension(request.ExcelFile.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+                return BadRequest("File phải có định dạng .xlsx");
+
+            var users = new List<User>();
+
+            using (var stream = new MemoryStream())
+            {
+                await request.ExcelFile.CopyToAsync(stream);
+
+                using (var package = new ExcelPackage(stream))
+                {
+                    var worksheet = package.Workbook.Worksheets[0];
+                    var rowCount = worksheet.Dimension.Rows;
+
+                    // Bỏ qua dòng header
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        var user = new User
+                        {
+                            UserName = worksheet.Cells[row, 1].Value?.ToString() ?? "",
+                            FullName = worksheet.Cells[row, 2].Value?.ToString() ?? "",
+                            CCCD = worksheet.Cells[row, 3].Value?.ToString() ?? "",
+                            FaceImg = worksheet.Cells[row, 4].Value?.ToString() ?? "",
+                            Fingerprint = worksheet.Cells[row, 5].Value?.ToString() ?? ""
+                        };
+
+                        // Validate dữ liệu
+                        if (string.IsNullOrWhiteSpace(user.UserName) || 
+                            string.IsNullOrWhiteSpace(user.FullName) || 
+                            string.IsNullOrWhiteSpace(user.CCCD))
+                        {
+                            continue; // Bỏ qua dòng không hợp lệ
+                        }
+
+                        users.Add(user);
+                    }
+                }
+            }
+
+            if (users.Count > 0)
+            {
+                await _context.Users.AddRangeAsync(users);
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok(users);
         }
 
         // POST: api/User (Tạo người dùng mới)
